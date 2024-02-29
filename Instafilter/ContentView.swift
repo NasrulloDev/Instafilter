@@ -7,21 +7,46 @@
 //import CoreImage
 //import CoreImage.CIFilterBuiltins
 import SwiftUI
+import PhotosUI
 
 struct ContentView: View {
+    
+    @State private var pickerItems = [PhotosPickerItem]()
+    @State private var selectedImages = [Image]()
     
 //    @State private var image: Image?
     
     var body: some View {
-//        ContentUnavailableView("No snippets", systemImage: "swift", description: Text("You don't have any saved snippets yet"))
-        ContentUnavailableView{
-            Label("No snippets", systemImage: "swift")
-        } description: {
-            Text("You don't have any saved snippets yet")
-        } actions: {
-            Button("Create snippet"){}
-                .buttonStyle(.borderedProminent)
+        VStack{
+            PhotosPicker("Select a picture", selection: $pickerItems,maxSelectionCount: 3, matching: .images)
+            
+            ScrollView{
+                ForEach(0..<selectedImages.count, id: \.self){ i in
+                    selectedImages[i]
+                        .resizable()
+                        .scaledToFit()
+                }
+            }
         }
+        .onChange(of: pickerItems){
+            Task{
+                selectedImages.removeAll()
+                for item in pickerItems {
+                    if let loadedImage = try await item.loadTransferable(type: Image.self){
+                        selectedImages.append(loadedImage)
+                    }
+                }
+            }
+        }
+//        ContentUnavailableView("No snippets", systemImage: "swift", description: Text("You don't have any saved snippets yet"))
+//        ContentUnavailableView{
+//            Label("No snippets", systemImage: "swift")
+//        } description: {
+//            Text("You don't have any saved snippets yet")
+//        } actions: {
+//            Button("Create snippet"){}
+//                .buttonStyle(.borderedProminent)
+//        }
 //        VStack{
 //            image?
 //                .resizable()

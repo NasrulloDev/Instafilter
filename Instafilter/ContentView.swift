@@ -7,21 +7,25 @@
 //import CoreImage
 //import CoreImage.CIFilterBuiltins
 import SwiftUI
-import PhotosUI
+import StoreKit
+//import PhotosUI
 
 struct ContentView: View {
-    
+    @Environment(\.requestReview) var requestReview
 //    @State private var pickerItems = [PhotosPickerItem]()
 //    @State private var selectedImages = [Image]()
     
 //    @State private var image: Image?
     
     var body: some View {
-        let example = Image(.de4EC4630DD94B9AA12AAD4E927E443B1105C)
-        ShareLink(item: example, preview: SharePreview("rasm", image: example)){
-            Label("Click to share", systemImage: "airplane")
+        Button("Leave a review"){
+            requestReview()
         }
-        ShareLink(item: URL(string: "https://hackingwithswift.com")!)
+//        let example = Image(.de4EC4630DD94B9AA12AAD4E927E443B1105C)
+//        ShareLink(item: example, preview: SharePreview("rasm", image: example)){
+//            Label("Click to share", systemImage: "airplane")
+//        }
+//        ShareLink(item: URL(string: "https://hackingwithswift.com")!)
 //        VStack{
 //            PhotosPicker("Select a picture", selection: $pickerItems,maxSelectionCount: 3, matching: .images)
 //            

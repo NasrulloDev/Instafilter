@@ -51,7 +51,9 @@ struct ContentView: View {
                     
                     Spacer()
                     
-                    //share the pic
+                    if let processedImage {
+                        ShareLink(item: processedImage, preview: SharePreview("Instafilter image", image: processedImage))
+                    }
                 }
             }
             .padding([.horizontal, .bottom])

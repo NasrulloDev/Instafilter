@@ -18,6 +18,7 @@ struct ContentView: View {
     @State private var filterIntensity = 0.5
     @State private var selectedItem: PhotosPickerItem?
     @State private var showingFilters = false
+    @State private var filterKey: String = "Intensity"
     
     @AppStorage("filterCount") var filterCount = 0
     @Environment(\.requestReview) var requestReview
@@ -45,7 +46,7 @@ struct ContentView: View {
                 Spacer()
                 
                 HStack{
-                    Text("Intensity")
+                    Text(filterKey)
                     Slider(value: $filterIntensity)
                         .onChange(of: filterIntensity, applyProcessing)
                         .disabled(processedImage == nil)
@@ -98,9 +99,16 @@ struct ContentView: View {
     func applyProcessing(){
         let inputKeys = currentFilter.inputKeys
 
-        if inputKeys.contains(kCIInputIntensityKey) { currentFilter.setValue(filterIntensity, forKey: kCIInputIntensityKey) }
-        if inputKeys.contains(kCIInputRadiusKey) { currentFilter.setValue(filterIntensity * 200, forKey: kCIInputRadiusKey) }
-        if inputKeys.contains(kCIInputScaleKey) { currentFilter.setValue(filterIntensity * 10, forKey: kCIInputScaleKey) }
+        if inputKeys.contains(kCIInputIntensityKey) { currentFilter.setValue(filterIntensity, forKey: kCIInputIntensityKey)
+            filterKey = "Intensity"
+        }
+        
+        if inputKeys.contains(kCIInputRadiusKey) { currentFilter.setValue(filterIntensity * 200, forKey: kCIInputRadiusKey)
+            filterKey = "Radius"
+        }
+        if inputKeys.contains(kCIInputScaleKey) { currentFilter.setValue(filterIntensity * 10, forKey: kCIInputScaleKey)
+            filterKey = "Scale"
+        }
 
         
         guard let outputImage = currentFilter.outputImage else {return}

@@ -72,6 +72,9 @@ struct ContentView: View {
                 Button("Sepia Tone"){ setFilter(CIFilter.sepiaTone() )}
                 Button("Unsharp Mask"){ setFilter(CIFilter.unsharpMask() )}
                 Button("Vignette"){ setFilter(CIFilter.vignette() )}
+                Button("Bloom"){ setFilter(CIFilter.bloom() )}
+                Button("Bump Distortion"){ setFilter(CIFilter.bumpDistortion() )}
+                Button("Dither"){ setFilter(CIFilter.dither() )}
                 Button("Cancel", role: .cancel) {}
             }
         }
@@ -98,6 +101,7 @@ struct ContentView: View {
         if inputKeys.contains(kCIInputIntensityKey) { currentFilter.setValue(filterIntensity, forKey: kCIInputIntensityKey) }
         if inputKeys.contains(kCIInputRadiusKey) { currentFilter.setValue(filterIntensity * 200, forKey: kCIInputRadiusKey) }
         if inputKeys.contains(kCIInputScaleKey) { currentFilter.setValue(filterIntensity * 10, forKey: kCIInputScaleKey) }
+
         
         guard let outputImage = currentFilter.outputImage else {return}
         guard let cgImage = context.createCGImage(outputImage, from: outputImage.extent) else {return}
